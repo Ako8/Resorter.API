@@ -19,6 +19,8 @@ public class CreateSeasonsCommandHandler
             await priceConditionRepository.CreateSeasons(toCreate);
         }
 
+
+        //Removing seasons
         if (request.DeletedSeasonIds != null)
         {
             var carSeasonIds = request.DeletedSeasonIds
