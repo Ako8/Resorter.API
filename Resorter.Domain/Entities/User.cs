@@ -10,5 +10,5 @@ public class User : IdentityUser<int>
     public ICollection<UserCar> UserCars { get; set; }
     public ICollection<UserSeason> UserSeasons { get; set; }
     public ICollection<UserTariff> UserTariffs { get; set; }
-    public ICollection<UserCity> UserCities { get; set; }
+    public ICollection<UserAddress> UserAddresses { get; set; }
 }

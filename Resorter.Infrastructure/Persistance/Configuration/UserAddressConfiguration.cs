@@ -4,20 +4,20 @@ using Resorter.Domain.Junctions;
 
 namespace Resorter.Infrastructure.Persistance.Configuration;
 
-public class UserCityConfiguration : BaseConfiguration<UserCity>
+public class UserAddressConfiguration : BaseConfiguration<UserAddress>
 {
-    public override void Configure(EntityTypeBuilder<UserCity> builder)
+    public override void Configure(EntityTypeBuilder<UserAddress> builder)
     {
-        builder.HasKey(e => new { e.UserId, e.CityId });
+        builder.HasKey(e => new { e.UserId, e.AddressId });
 
         builder.HasOne(e => e.User)
-            .WithMany(e => e.UserCities)
+            .WithMany(e => e.UserAddresses)
             .HasForeignKey(e => e.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(e => e.City)
-            .WithMany(e => e.UserCities)
-            .HasForeignKey(e => e.CityId)
+        builder.HasOne(e => e.Address)
+            .WithMany(e => e.UserAddresses)
+            .HasForeignKey(e => e.AddressId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

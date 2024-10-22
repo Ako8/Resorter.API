@@ -11,15 +11,5 @@ public class CityConfiguration : BaseConfiguration<City>
         builder.HasKey(e => e.Id);
 
         ConfigureBase(builder, x => x.Name, 100);
-
-        builder.HasMany(e => e.UserCities)
-            .WithOne(e => e.City)
-            .HasForeignKey(e => e.CityId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(e => e.Addresses)
-            .WithOne(e => e.City)
-            .HasForeignKey(e => e.CityId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

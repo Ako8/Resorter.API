@@ -1,4 +1,6 @@
-﻿namespace Resorter.Domain.Entities;
+﻿using Resorter.Domain.Junctions;
+
+namespace Resorter.Domain.Entities;
 
 public class Address
 {
@@ -8,4 +10,6 @@ public class Address
     public string Location { get; set; }
     public decimal DeliveryFee { get; set; }
     public string DeliveryTime { get; set; }
+
+    public ICollection<UserAddress> UserAddresses { get; set; }
 }

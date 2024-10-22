@@ -17,10 +17,9 @@ public class AddressConfiguration : BaseConfiguration<Address>
             .HasColumnType("decimal(18,2)")
             .IsRequired();
 
-        builder.HasOne(e => e.City)
-            .WithMany(e => e.Addresses)
-            .HasForeignKey(e => e.CityId)
+        builder.HasMany(e => e.UserAddresses)
+            .WithOne(e => e.Address)
+            .HasForeignKey(e => e.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
-
     }
 }
