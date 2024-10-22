@@ -5,19 +5,16 @@ using Resorter.Infrastructure.Persistance;
 
 namespace Resorter.Infrastructure.Repositories;
 
-internal class CarRepository(ResorterDbContext dbContext) : IBaseRepository<Car>
+internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
 {
-    public async Task<Car> AddAsync(Car entity)
+    public async Task AddAsync(Car entity)
     {
         dbContext.Cars.Add(entity);
-        await dbContext.SaveChangesAsync();
-        return entity;
     }
 
     public async Task DeleteAsync(Car entity)
     {
-        dbContext.Remove(entity);
-        await dbContext.SaveChangesAsync();
+        dbContext.Cars.Remove(entity);
     }
 
     public async Task<IReadOnlyList<Car>> GetAllAsync()
@@ -28,10 +25,11 @@ internal class CarRepository(ResorterDbContext dbContext) : IBaseRepository<Car>
 
     public async Task<Car> GetByIdAsync(int id)
     {
-        var car = await dbContext.Cars.SingleOrDefaultAsync(e => e.Id == id);
+        var car = await dbContext.Cars
+            .SingleOrDefaultAsync(e => e.Id == id);
         return car;
     }
 
-    public Task SaveChanges()
-        => dbContext.SaveChangesAsync();
+    public async Task SaveChanges()
+        => await dbContext.SaveChangesAsync();
 }
