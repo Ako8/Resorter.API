@@ -25,9 +25,9 @@ internal class ResorterSeeder(ResorterDbContext dbContext) : IResorterSeeder
 
         List<UserRole> roles =
             [
-                new UserRole() { NormalizedName =UserRoles.Admin.ToUpper(),
+                new UserRole() {Name = UserRoles.Admin, NormalizedName=UserRoles.Admin.ToUpper(),
                 },
-                new UserRole() {NormalizedName =UserRoles.User.ToUpper(),
+                new UserRole() {Name = UserRoles.User, NormalizedName=UserRoles.User.ToUpper(),
                 }
             ];
 
