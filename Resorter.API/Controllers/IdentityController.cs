@@ -12,6 +12,7 @@ public class IdentityController(IMediator mediator) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
+
         var result = await mediator.Send(command);
         if (result.Succeeded) 
             return Ok( new { Message = "User registered successfully" });

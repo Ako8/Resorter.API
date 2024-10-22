@@ -13,7 +13,22 @@ public class RegisterCommandHandler
 {
     public async Task<RegisterDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
+        var existingUser = await userManager.FindByEmailAsync(request.Email);
+        if (existingUser != null)
+        {
+            return new RegisterDto
+            {
+                Succeeded = false,
+                Errors = new[] { "User with this email already exists." }
+            };
+        }
+
         var user = request.RegisterMap();
+
+        user.NormalizedEmail = userManager.NormalizeEmail(request.Email);
+        user.NormalizedUserName = userManager.NormalizeName(request.Email);
+
+
         var result = await userManager.CreateAsync( user, request.Password);
 
         if (!result.Succeeded)

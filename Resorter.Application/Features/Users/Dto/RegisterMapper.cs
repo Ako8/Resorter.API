@@ -13,7 +13,6 @@ public static class RegisterMapper
             UserName = command.Email,
             Email = command.Email,
             PhoneNumber = command.PhoneNumber,
-            NormalizedEmail = command.Email
         };
     }
 }
