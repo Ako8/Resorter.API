@@ -5,6 +5,8 @@ using Resorter.Application.Entities;
 using Resorter.Application.Features.Users.Dto;
 using Resorter.Domain.Services;
 using Resorter.Domain.Exceptions;
+using Resorter.Domain.Repositories;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Application.Features.Users.Commands.Login;
 
@@ -12,7 +14,8 @@ public class LoginCommandHandler
     (
         UserManager<User> userManager,
         SignInManager<User> signInManager,
-        IJwtTokenService jwtTokenService
+        IJwtTokenService jwtTokenService,
+        ICrudRepository<Address> addressRepository
     ) : IRequestHandler<LoginCommand, LoginDto>
 {
     public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
