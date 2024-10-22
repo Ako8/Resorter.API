@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IBulkRepository<Season>, SeasonRepository>();
         services.AddScoped<IBulkRepository<Tariff>, TariffRepository>();
         services.AddScoped<ICrudRepository<Car>, CarRepository>();
+        services.AddScoped<ICrudRepository<Discount>, DiscountRepository>();
         services.AddScoped<ICrudRepository<Address>, AddressRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IResorterSeeder, ResorterSeeder>();
