@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Resorter.Domain.Junctions;
 
 namespace Resorter.Application.Entities;
 
-public class User : IdentityUser
+public class User : IdentityUser<int>
 {
     public string Name { get; set; }
-    public List<Car> Cars { get; set; }
-    public List<Season> Seasons { get; set; }
-    public List<Tariff> Tariffs { get; set; }
+    public string Email { get; set; }
+    public ICollection<UserCar> UserCars { get; set; }
+    public ICollection<UserSeason> UserSeasons { get; set; }
+    public ICollection<UserTariff> UserTariffs { get; set; }
+    public ICollection<UserCity> UserCities { get; set; }
 }

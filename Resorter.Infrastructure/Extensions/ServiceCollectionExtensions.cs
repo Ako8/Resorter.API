@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 using Resorter.Domain.Services;
 using Resorter.Infrastructure.Persistance;
-using Resorter.Infrastructure.Repositories;
 using Resorter.Infrastructure.Seeder;
 
 namespace Resorter.Infrastructure.Extensions;
@@ -29,11 +28,9 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddIdentityApiEndpoints<User>()
-            .AddRoles<IdentityRole>()
+            .AddRoles<UserRole>()
             .AddEntityFrameworkStores<ResorterDbContext>();
 
-        services.AddScoped<IPriceConditionRepository, PriceConditionRepository>();
-        services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IResorterSeeder, ResorterSeeder>();
     }

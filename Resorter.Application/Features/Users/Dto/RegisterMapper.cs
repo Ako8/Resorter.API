@@ -9,9 +9,11 @@ public static class RegisterMapper
     {
         return new User
         {
+            Name = command.Name,
             UserName = command.Email,
             Email = command.Email,
             PhoneNumber = command.PhoneNumber,
+            NormalizedEmail = command.Email
         };
     }
 }

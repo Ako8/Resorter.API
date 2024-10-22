@@ -1,24 +1,31 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Infrastructure.Persistance.Configuration;
 
-public class DiscountConfiguration : IEntityTypeConfiguration<Discount>
+public class DiscountConfiguration : BaseConfiguration<Discount>
 {
-    public void Configure(EntityTypeBuilder<Discount> builder)
+    public override void Configure(EntityTypeBuilder<Discount> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(e => e.Id);
 
-        builder.Property(x => x.StartDate).IsRequired();
-        builder.Property(x => x.EndDate).IsRequired();
-        builder.Property(x => x.IsDiscount).IsRequired();
-        builder.Property(x => x.PrecentageAmount).IsRequired();
+        ConfigureBase(builder, x => x.Name, 100);
 
-        builder
-            .HasOne(e => e.Car)
-            .WithMany(c => c.Discounts)
+        builder.Property(e => e.PercentageAmount)
+            .IsRequired();
+
+        builder.Property(e => e.StartDate)
+            .IsRequired();
+
+        builder.Property(e => e.EndDate)
+            .IsRequired();
+
+        builder.Property(e => e.IsDiscount)
+            .IsRequired();
+
+        builder.HasOne(e => e.Car)
+            .WithMany(e => e.Discounts)
             .HasForeignKey(e => e.CarId)
             .OnDelete(DeleteBehavior.Cascade);
     }

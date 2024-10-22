@@ -5,6 +5,7 @@ using Resorter.Application.Entities;
 using Resorter.Application.Features.Users.Dto;
 using Resorter.Domain.Services;
 using Resorter.Domain.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Resorter.Application.Features.Users.Commands.Login;
 
@@ -17,7 +18,7 @@ public class LoginCommandHandler
 {
     public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByEmailAsync( request.Email );
+        var user = await userManager.FindByEmailAsync(request.Email);
         if (user == null)
             throw new NotFoundException(nameof(User), request.Email.ToString());
 

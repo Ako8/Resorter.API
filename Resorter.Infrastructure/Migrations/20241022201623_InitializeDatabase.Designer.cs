@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resorter.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using Resorter.Infrastructure.Persistance;
 namespace Resorter.Infrastructure.Migrations
 {
     [DbContext(typeof(ResorterDbContext))]
-    partial class ResorterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241022201623_InitializeDatabase")]
+    partial class InitializeDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

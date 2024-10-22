@@ -1,4 +1,5 @@
 ﻿using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Domain.Constants;
 
@@ -12,9 +13,6 @@ public static class DefaultData
             Brand = "Default",
             Model = "Default",
             LicensePlate = "XX 000 XX",
-            YearOfManufacturer = "2024",
-            BodyColor = "White",
-            BodyType = "Sedan",
         };
     }
 
@@ -24,7 +22,6 @@ public static class DefaultData
         {
                 new Season()
                 {
-                    User = user,
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddMonths(5),
                 },
@@ -37,7 +34,6 @@ public static class DefaultData
         {
             new Tariff()
             {
-                User = user,
                 MinDays = 1,
                 MaxDays = 31,
             }

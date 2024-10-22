@@ -20,7 +20,7 @@ public class JwtTokenService(IConfiguration configuration) : IJwtTokenService
 
         var claims = new List<Claim>
         {
-            new Claim("id", user.Id),
+            new Claim("id", user.Id.ToString()),
             new Claim("email", user.Email),
             new Claim("email_confirmed", $"{user.EmailConfirmed}"),
             new Claim("phoneNumber", user.PhoneNumber),

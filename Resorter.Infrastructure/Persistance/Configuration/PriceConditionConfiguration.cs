@@ -1,31 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Infrastructure.Persistance.Configuration;
 
-public class PriceConditionConfiguration : IEntityTypeConfiguration<PriceCondition>
+public class PriceConditionConfiguration : BaseConfiguration<PriceCondition>
 {
-    public void Configure(EntityTypeBuilder<PriceCondition> builder)
+    public override void Configure(EntityTypeBuilder<PriceCondition> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(e => e.Id);
 
-        builder.Property(x => x.Price).HasPrecision(18, 2).IsRequired();
+        builder.Property(e => e.Price)
+            .HasColumnType("decimal(18,2)")
+            .IsRequired();
 
-        builder.HasOne(x => x.Car)
-            .WithMany(x => x.PriceConditions)
-            .HasForeignKey(x => x.CarId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(e => e.Car)
+            .WithMany(e => e.PriceConditions)
+            .HasForeignKey(e => e.CarId);
 
-        builder.HasOne(x => x.Season)
+        builder.HasOne(e => e.Season)
             .WithMany()
-            .HasForeignKey(x => x.SeasonId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(e => e.SeasonId);
 
-        builder.HasOne(x => x.Tariff)
+        builder.HasOne(e => e.Tariff)
             .WithMany()
-            .HasForeignKey(x => x.TariffId)
-            .OnDelete(DeleteBehavior.Restrict);
-
+            .HasForeignKey(e => e.TariffId);
     }
 }

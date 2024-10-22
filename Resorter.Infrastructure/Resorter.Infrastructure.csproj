@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Resorter.Application\Resorter.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

@@ -1,22 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Infrastructure.Persistance.Configuration;
 
-public class SeasonConfiguration : IEntityTypeConfiguration<Season>
+public class SeasonConfiguration : BaseConfiguration<Season>
 {
-    public void Configure(EntityTypeBuilder<Season> builder)
+    public override void Configure(EntityTypeBuilder<Season> builder)
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.StartDate).IsRequired();
-        builder.Property(x => x.EndDate).IsRequired();
-    
-        builder
-            .HasOne(x => x.User)
-            .WithMany(u => u.Seasons)
-            .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(e => e.StartDate).IsRequired();
+        builder.Property(e => e.EndDate).IsRequired();
+
+        builder.HasMany(e => e.UserSeasons)
+            .WithOne(e => e.Season)
+            .HasForeignKey(e => e.SeasonId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

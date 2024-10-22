@@ -1,22 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Resorter.Application.Entities;
+using Resorter.Domain.Entities;
 
 namespace Resorter.Infrastructure.Persistance.Configuration;
 
-public class TariffConfiguration : IEntityTypeConfiguration<Tariff>
+public class TariffConfiguration : BaseConfiguration<Tariff>
 {
-    public void Configure(EntityTypeBuilder<Tariff> builder)
+    public override void Configure(EntityTypeBuilder<Tariff> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(e => e.Id);
 
-        builder.Property(x => x.MinDays).IsRequired();
-        builder.Property(x => x.MaxDays).IsRequired();
+        builder.Property(e => e.MinDays)
+            .IsRequired();
 
-        builder
-            .HasOne(x => x.User)
-            .WithMany(u => u.Tariffs)
-            .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(e => e.MaxDays)
+            .IsRequired();
+
+        builder.HasMany(e => e.UserTariffs)
+            .WithOne(e => e.Tariff)
+            .HasForeignKey(e => e.TariffId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

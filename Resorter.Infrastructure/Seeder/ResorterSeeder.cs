@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Resorter.Domain.Constants;
+using Resorter.Domain.Entities;
 using Resorter.Infrastructure.Persistance;
 
 namespace Resorter.Infrastructure.Seeder;
@@ -20,15 +20,14 @@ internal class ResorterSeeder(ResorterDbContext dbContext) : IResorterSeeder
         }
     }
 
-    private IEnumerable<IdentityRole> GetRoles()
+    private IEnumerable<UserRole> GetRoles()
     {
-        List<IdentityRole> roles =
+
+        List<UserRole> roles =
             [
-                 new (UserRoles.Admin){
-                    NormalizedName =UserRoles.Admin.ToUpper(),
+                new UserRole() { NormalizedName =UserRoles.Admin.ToUpper(),
                 },
-                new (UserRoles.User){
-                    NormalizedName =UserRoles.User.ToUpper(),
+                new UserRole() {NormalizedName =UserRoles.User.ToUpper(),
                 }
             ];
 
