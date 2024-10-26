@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resorter.Application.Features.Cars.Queries.GetFilteredCars;
 using Resorter.Domain.Entities;
 using Resorter.Domain.Repositories;
 using Resorter.Infrastructure.Persistance;
@@ -21,6 +22,81 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
     {
         var cars = await dbContext.Cars.AsNoTracking().ToListAsync();
         return cars;
+    }
+
+
+    public async Task<IEnumerable<Car>> GetAllFilteredAsync<TFilter>(TFilter carFilter) where TFilter : class
+    {
+        if (carFilter is not GetFilteredCarsQuery filter)
+            return Enumerable.Empty<Car>();
+
+        if (filter.PageNumber < 1) filter.PageNumber = 1;
+        if (filter.PageSize < 1) filter.PageSize = 10;
+
+        var query = dbContext.Cars.AsQueryable();
+        var now = DateTime.UtcNow.Date;
+
+        // Calculate booking range days safely
+        var bookRange = (filter.EndDate.Date - filter.StartDate.Date).Days;
+        if (bookRange < 0) return Enumerable.Empty<Car>();
+
+        // Build query with null checks and proper date comparisons
+        query = query.Where(car =>
+            car.PriceConditions.Any(con =>
+                con.Tariff != null &&
+                con.Season != null &&
+                con.Tariff.MinDays <= bookRange &&
+                bookRange <= con.Tariff.MaxDays &&
+                con.Season.StartDate.Date <= now &&
+                con.Season.EndDate.Date >= now)
+            &&
+            !car.Orders.Any(order =>
+                order.StartDate.Date <= filter.EndDate.Date &&
+                order.EndDate.Date >= filter.StartDate.Date)
+        );
+
+        // Handle location filtering with null checks
+        if (!string.IsNullOrEmpty(filter.PickUp) || !string.IsNullOrEmpty(filter.DropOff))
+        {
+            query = query.Where(car => car.UserCars.Any(userCar =>
+                userCar.User.UserAddresses.Any(userAddress =>
+                    userAddress.Address != null &&
+                    userAddress.Address.City != null &&
+                    (!string.IsNullOrEmpty(filter.PickUp) ?
+                        userAddress.Address.City.Name.Contains(filter.PickUp) : true) &&
+                    (!string.IsNullOrEmpty(filter.DropOff) ?
+                        userAddress.Address.City.Name.Contains(filter.DropOff) : true)
+                )
+            ));
+        }
+
+        // Apply remaining filters with null checks
+        if (filter.BodyTypes?.Count > 0)
+            query = query.Where(c => filter.BodyTypes.Contains(c.BodyType));
+
+        if (filter.FuelTypes?.Count > 0)
+            query = query.Where(c => c.Engine != null && filter.FuelTypes.Contains(c.Engine.Fuel));
+
+        if (filter.DriveTypes?.Count > 0)
+            query = query.Where(c => c.Chassis != null && filter.DriveTypes.Contains(c.Chassis.Drive));
+
+        if (filter.Transmissions?.Count > 0)
+            query = query.Where(c => c.Chassis != null && filter.Transmissions.Contains(c.Chassis.Transmission));
+
+        if (filter.Year > 0)
+            query = query.Where(c => c.YearOfManufacture == filter.Year);
+
+        if (filter.FuelConsumptionMin > 0)
+            query = query.Where(c => c.Engine != null && c.Engine.FuelConsumptionKm >= filter.FuelConsumptionMin);
+
+        if (filter.FuelConsumptionMax > 0)
+            query = query.Where(c => c.Engine != null && c.Engine.FuelConsumptionKm <= filter.FuelConsumptionMax);
+
+       
+        return await query
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToListAsync();
     }
 
     public async Task<Car> GetByIdAsync(int id)
