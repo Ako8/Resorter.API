@@ -22,6 +22,11 @@ internal class DiscountRepository(ResorterDbContext dbContext) : ICrudRepository
         return await dbContext.Discounts.AsNoTracking().ToListAsync();
     }
 
+    public Task<IEnumerable<Discount>> GetAllFilteredAsync<TFilter>(TFilter filter) where TFilter : class
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Discount> GetByIdAsync(int id)
     {
         var discount = await dbContext.Discounts.SingleOrDefaultAsync(x => x.Id == id);

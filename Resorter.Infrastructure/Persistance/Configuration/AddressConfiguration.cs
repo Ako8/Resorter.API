@@ -21,5 +21,9 @@ public class AddressConfiguration : BaseConfiguration<Address>
             .WithOne(e => e.Address)
             .HasForeignKey(e => e.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(a => a.City)
+            .WithMany()
+            .HasForeignKey(a => a.CityId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Resorter.Application.Entities;
 using Resorter.Domain.Entities;
@@ -10,6 +9,7 @@ namespace Resorter.Infrastructure.Persistance;
 public class ResorterDbContext(DbContextOptions<ResorterDbContext> options) : IdentityDbContext<User, UserRole, int>(options)
 {
     internal DbSet<Car> Cars { get; set; }
+    internal DbSet<Order> Orders { get; set; }
     internal DbSet<Season> Seasons { get; set; }
     internal DbSet<Tariff> Tariffs { get; set; }
     internal DbSet<City> Cities { get; set; }

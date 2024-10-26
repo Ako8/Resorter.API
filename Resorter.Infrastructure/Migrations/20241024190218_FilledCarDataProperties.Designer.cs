@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resorter.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using Resorter.Infrastructure.Persistance;
 namespace Resorter.Infrastructure.Migrations
 {
     [DbContext(typeof(ResorterDbContext))]
-    partial class ResorterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241024190218_FilledCarDataProperties")]
+    partial class FilledCarDataProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,52 +325,6 @@ namespace Resorter.Infrastructure.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("Discounts");
-                });
-
-            modelBuilder.Entity("Resorter.Domain.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DropoffAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PickupAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("DropoffAddressId");
-
-                    b.HasIndex("PickupAddressId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Resorter.Domain.Entities.PriceCondition", b =>
@@ -752,41 +709,6 @@ namespace Resorter.Infrastructure.Migrations
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("Resorter.Domain.Entities.Order", b =>
-                {
-                    b.HasOne("Resorter.Domain.Entities.Car", "Car")
-                        .WithMany("Orders")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Resorter.Domain.Entities.Address", "DropoffAddress")
-                        .WithMany("DropoffOrders")
-                        .HasForeignKey("DropoffAddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Resorter.Domain.Entities.Address", "PickupAddress")
-                        .WithMany("PickupOrders")
-                        .HasForeignKey("PickupAddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Resorter.Application.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("DropoffAddress");
-
-                    b.Navigation("PickupAddress");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Resorter.Domain.Entities.PriceCondition", b =>
                 {
                     b.HasOne("Resorter.Domain.Entities.Car", "Car")
@@ -892,8 +814,6 @@ namespace Resorter.Infrastructure.Migrations
 
             modelBuilder.Entity("Resorter.Application.Entities.User", b =>
                 {
-                    b.Navigation("Orders");
-
                     b.Navigation("UserAddresses");
 
                     b.Navigation("UserCars");
@@ -905,18 +825,12 @@ namespace Resorter.Infrastructure.Migrations
 
             modelBuilder.Entity("Resorter.Domain.Entities.Address", b =>
                 {
-                    b.Navigation("DropoffOrders");
-
-                    b.Navigation("PickupOrders");
-
                     b.Navigation("UserAddresses");
                 });
 
             modelBuilder.Entity("Resorter.Domain.Entities.Car", b =>
                 {
                     b.Navigation("Discounts");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("PriceConditions");
 

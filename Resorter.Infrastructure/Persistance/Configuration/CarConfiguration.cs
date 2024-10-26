@@ -25,7 +25,6 @@ public class CarConfiguration : BaseConfiguration<Car>
         builder.OwnsOne(car => car.Chassis);
 
 
-
         builder.HasMany(e => e.Discounts)
             .WithOne(e => e.Car)
             .HasForeignKey(e => e.CarId)

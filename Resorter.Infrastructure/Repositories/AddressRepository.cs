@@ -27,6 +27,11 @@ internal class AddressRepository(ResorterDbContext dbContext) : ICrudRepository<
         return addresses;
     }
 
+    public Task<IEnumerable<Address>> GetAllFilteredAsync<TFilter>(TFilter filter) where TFilter : class
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Address> GetByIdAsync(int id)
     {
         var address = await dbContext.Addresses
