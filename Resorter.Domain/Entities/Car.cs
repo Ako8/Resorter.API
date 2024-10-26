@@ -19,6 +19,7 @@ public class Car
     public Insurance Insurance { get; set; }
 
 
+    public ICollection<Order> Orders { get; set; }
     public ICollection<UserCar> UserCars { get; set; }
     public ICollection<Discount> Discounts { get; set; }
     public ICollection<PriceCondition> PriceConditions { get; set; }

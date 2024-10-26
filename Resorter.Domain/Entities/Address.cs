@@ -11,5 +11,7 @@ public class Address
     public decimal DeliveryFee { get; set; }
     public string DeliveryTime { get; set; }
 
+    public ICollection<Order> PickupOrders { get; set; }
+    public ICollection<Order> DropoffOrders { get; set; }
     public ICollection<UserAddress> UserAddresses { get; set; }
 }

@@ -21,8 +21,6 @@
   <ItemGroup>
     <Folder Include="Features\Cars\Commands\CreateCar\" />
     <Folder Include="Features\Cars\Commands\UpdateCar\" />
-    <Folder Include="Features\Cars\Dto\" />
-    <Folder Include="Features\Cars\Queries\GetAllCars\" />
     <Folder Include="Features\Cars\Queries\GetCar\" />
   </ItemGroup>
 
