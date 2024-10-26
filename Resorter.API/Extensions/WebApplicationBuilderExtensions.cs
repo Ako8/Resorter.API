@@ -2,7 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resorter.API.Middleware;
+using Serilog;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Resorter.API.Extensions;
 
@@ -28,7 +30,10 @@ public static class WebApplicationBuilderExtensions
         });
 
         builder.Services.AddAuthorization();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        }); ;
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Resorter API", Version = "v1" });
@@ -55,5 +60,8 @@ public static class WebApplicationBuilderExtensions
         });
 
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
+        builder.Host.UseSerilog((context, configuration) =>
+            configuration.ReadFrom.Configuration(context.Configuration));
     }
 }
