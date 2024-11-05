@@ -33,4 +33,3 @@ app.MapControllers();
 app.Run();
 
 
-//aqana daemate dimitri mumladzis pirveli komiti
