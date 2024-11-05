@@ -1,15 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resorter.Domain.Entities;
+﻿using Resorter.Domain.Entities;
 using Resorter.Domain.Repositories;
 using Resorter.Infrastructure.Persistance;
 
 namespace Resorter.Infrastructure.Repositories;
 
-internal class PriceConditionRepository(ResorterDbContext dbContext) : ICrudRepository<PriceCondition>
+internal class PriceConditionRepository(ResorterDbContext dbContext) : IPriceConditionRepository
 {
     public Task AddAsync(PriceCondition entity)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task AddRangeAsync(IEnumerable<PriceCondition> priceConditions)
+    {
+        dbContext.PriceConditions.AddRangeAsync(priceConditions);
     }
 
     public Task DeleteAsync(PriceCondition entity)
@@ -22,20 +26,11 @@ internal class PriceConditionRepository(ResorterDbContext dbContext) : ICrudRepo
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<PriceCondition>> GetAllFilteredAsync<TFilter>(TFilter filter) where TFilter : class
+    public Task<PriceCondition> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PriceCondition> GetByIdAsync(int id)
-    {
-        var priceCond = await dbContext.PriceConditions
-            .SingleOrDefaultAsync(e => e.Id == id);
-        return priceCond;
-    }
-
-    public Task SaveChanges()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task SaveChanges()
+        => await dbContext.SaveChangesAsync();
 }

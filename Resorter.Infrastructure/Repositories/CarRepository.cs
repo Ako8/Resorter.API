@@ -6,7 +6,7 @@ using Resorter.Infrastructure.Persistance;
 
 namespace Resorter.Infrastructure.Repositories;
 
-internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
+internal class CarRepository(ResorterDbContext dbContext) : ICarRepository
 {
     public async Task AddAsync(Car entity)
     {
@@ -33,14 +33,15 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
         if (filter.PageNumber < 1) filter.PageNumber = 1;
         if (filter.PageSize < 1) filter.PageSize = 10;
 
-        var query = dbContext.Cars.AsQueryable();
+        var query = dbContext.Cars
+            .Include(c => c.PriceConditions)
+                .ThenInclude(p =>  p.Season)
+            .AsQueryable();
         var now = DateTime.UtcNow.Date;
 
-        // Calculate booking range days safely
         var bookRange = (filter.EndDate.Date - filter.StartDate.Date).Days;
         if (bookRange < 0) return Enumerable.Empty<Car>();
 
-        // Build query with null checks and proper date comparisons
         query = query.Where(car =>
             car.PriceConditions.Any(con =>
                 con.Tariff != null &&
@@ -55,7 +56,6 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
                 order.EndDate.Date >= filter.StartDate.Date)
         );
 
-        // Handle location filtering with null checks
         if (!string.IsNullOrEmpty(filter.PickUp) || !string.IsNullOrEmpty(filter.DropOff))
         {
             query = query.Where(car => car.UserCars.Any(userCar =>
@@ -70,7 +70,6 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
             ));
         }
 
-        // Apply remaining filters with null checks
         if (filter.BodyTypes?.Count > 0)
             query = query.Where(c => filter.BodyTypes.Contains(c.BodyType));
 
@@ -91,8 +90,7 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
 
         if (filter.FuelConsumptionMax > 0)
             query = query.Where(c => c.Engine != null && c.Engine.FuelConsumptionKm <= filter.FuelConsumptionMax);
-
-       
+        
         return await query
             .Skip((filter.PageNumber - 1) * filter.PageSize)
             .Take(filter.PageSize)
@@ -102,8 +100,14 @@ internal class CarRepository(ResorterDbContext dbContext) : ICrudRepository<Car>
     public async Task<Car> GetByIdAsync(int id)
     {
         var car = await dbContext.Cars
+            .Include(c => c.PriceConditions)
             .SingleOrDefaultAsync(e => e.Id == id);
         return car;
+    }
+
+    public Task<IReadOnlyList<Season>> GetByIdsAndUserAsync(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task SaveChanges()

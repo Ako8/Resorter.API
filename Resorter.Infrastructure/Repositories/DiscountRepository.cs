@@ -33,6 +33,11 @@ internal class DiscountRepository(ResorterDbContext dbContext) : ICrudRepository
         return discount;
     }
 
+    public Task<IReadOnlyList<Season>> GetByIdsAndUserAsync(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task SaveChanges()
         => await dbContext.SaveChangesAsync();
 }

@@ -41,6 +41,11 @@ internal class AddressRepository(ResorterDbContext dbContext) : ICrudRepository<
         return address;
     }
 
+    public Task<IReadOnlyList<Season>> GetByIdsAndUserAsync(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task SaveChanges() 
         => await dbContext.SaveChangesAsync();
     
