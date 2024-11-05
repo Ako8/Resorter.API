@@ -16,27 +16,27 @@ public static class DefaultData
         };
     }
 
-    public static List<Season> Season(User? user)
+    public static List<Season> Season()
     {
-        return new List<Season>()
-        {
-                new Season()
-                {
-                    StartDate = DateTime.UtcNow,
-                    EndDate = DateTime.UtcNow.AddMonths(5),
-                },
-        };
+        return
+        [
+            new Season()
+            {
+                StartDate = new DateTime(DateTime.Now.Year, 1, 1), 
+                EndDate = new DateTime(DateTime.Now.Year, 12, 31),
+            },
+        ];
     }
 
-    public static List<Tariff> Tariff(User? user)
+    public static List<Tariff> Tariff()
     {
-        return new List<Tariff>()
-        {
+        return
+        [
             new Tariff()
             {
                 MinDays = 1,
                 MaxDays = 31,
             }
-        };
+        ];
     }
 }
