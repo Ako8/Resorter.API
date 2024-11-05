@@ -33,11 +33,13 @@ public static class ServiceCollectionExtensions
             .AddRoles<UserRole>()
             .AddEntityFrameworkStores<ResorterDbContext>();
 
-        services.AddScoped<IBulkRepository<Season>, SeasonRepository>();
-        services.AddScoped<IBulkRepository<Tariff>, TariffRepository>();
-        services.AddScoped<ICrudRepository<Car>, CarRepository>();
+        
+        services.AddScoped<ISeasonRepository, SeasonRepository>();
+        services.AddScoped<ITariffRepository, TariffRepository>();
+        services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<ICrudRepository<Discount>, DiscountRepository>();
         services.AddScoped<ICrudRepository<Address>, AddressRepository>();
+        services.AddScoped<IPriceConditionRepository, PriceConditionRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IResorterSeeder, ResorterSeeder>();
     }
