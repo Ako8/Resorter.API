@@ -2,11 +2,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Resorter.Application.Entities;
-using Resorter.Application.Features.Users.Dto;
 using Resorter.Domain.Services;
 using Resorter.Domain.Exceptions;
 using Resorter.Domain.Repositories;
 using Resorter.Domain.Entities;
+using Resorter.Application.Dtos;
 
 namespace Resorter.Application.Features.Users.Commands.Login;
 
@@ -14,8 +14,7 @@ public class LoginCommandHandler
     (
         UserManager<User> userManager,
         SignInManager<User> signInManager,
-        IJwtTokenService jwtTokenService,
-        ICrudRepository<Address> addressRepository
+        IJwtTokenService jwtTokenService
     ) : IRequestHandler<LoginCommand, LoginDto>
 {
     public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)

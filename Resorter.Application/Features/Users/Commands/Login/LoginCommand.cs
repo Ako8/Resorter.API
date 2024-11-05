@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Resorter.Application.Features.Users.Dto;
+using Resorter.Application.Dtos;
 
 namespace Resorter.Application.Features.Users.Commands.Login;
 

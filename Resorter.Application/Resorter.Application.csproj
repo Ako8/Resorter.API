@@ -19,9 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Cars\Commands\CreateCar\" />
-    <Folder Include="Features\Cars\Commands\UpdateCar\" />
-    <Folder Include="Features\Cars\Queries\GetCar\" />
+    <Folder Include="Features\Settings\Commands\" />
+    <Folder Include="Features\Settings\RequestHelpers\" />
   </ItemGroup>
 
 </Project>

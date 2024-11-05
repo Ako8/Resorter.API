@@ -1,11 +1,13 @@
-﻿using Resorter.Domain.Constants;
+﻿using MediatR;
+using Resorter.Application.Dtos;
+using Resorter.Domain.Constants;
 using Resorter.Domain.Entities;
 
-namespace Resorter.Application.Features.Cars.Dto;
+namespace Resorter.Application.Features.Cars.Commands.UpdateCar;
 
-public class GetCarDto
+public class UpdateCarCommand(int CarId) : IRequest
 {
-    public int Id { get; set; }
+    public int CarId { get; set; } = CarId;
     public string Brand { get; set; }
     public string Model { get; set; }
     public string LicensePlate { get; set; }
@@ -16,7 +18,5 @@ public class GetCarDto
     public Specifications Specifications { get; set; }
     public Chassis Chassis { get; set; }
     public Insurance Insurance { get; set; }
-    public decimal PriceADay { get; set; }
-    public decimal TotalPrice { get; set; }
-    public string Discount { get; set; }
+    public List<PriceConditionDto> PriceConditions { get; set; }
 }

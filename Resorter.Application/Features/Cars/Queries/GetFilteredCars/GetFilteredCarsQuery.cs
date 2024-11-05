@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Resorter.Application.Features.Cars.Dto;
+using Resorter.Application.Dtos;
 using Resorter.Domain.Constants;
 
 namespace Resorter.Application.Features.Cars.Queries.GetFilteredCars;
@@ -12,8 +12,8 @@ public class GetFilteredCarsQuery : IRequest<IEnumerable<GetCarDto>>
     public DateTime EndDate { get; set; } = DateTime.UtcNow.AddDays(16);
     public string PickUp { get; set; } = "Tbilisi";
     public string DropOff { get; set; } = "Tbilisi";
-    public decimal MinPrice { get; set; }
-    public decimal MaxPrice { get; set; }
+    public int MinPrice { get; set; }
+    public int MaxPrice { get; set; } = 999999;
     public List<BodyTypeEnum> BodyTypes { get; set; } = [];
     public List<FuelTypeEnum> FuelTypes { get; set; } = [];
     public List<TransmissionEnum> Transmissions { get; set; } = [];

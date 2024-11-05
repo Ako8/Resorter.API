@@ -1,4 +1,4 @@
-﻿namespace Resorter.Application.Features.Users.Dto;
+﻿namespace Resorter.Application.Dtos;
 
 public class RegisterDto
 {
